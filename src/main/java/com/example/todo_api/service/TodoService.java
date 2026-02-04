@@ -1,5 +1,6 @@
 package com.example.todo_api.service;
 
+import com.example.todo_api.entity.Todo;
 import com.example.todo_api.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 import com.example.todo_api.form.TodoCreateForm;
@@ -11,7 +12,10 @@ public class TodoService {
     public TodoService(TodoRepository todoRepository){//TodoRepositoryクラスの初期化
         this.todoRepository=todoRepository;
     }
+
     public void createTodo(TodoCreateForm form){ //@RequestBodyは不要　Serviceに届くころにはTodoCreateFormというオブジェクトになっている。
-        todoRepository.insert(form);//todoRepositoryクラスのinsert関数
+        Todo todo = new Todo(); // 受け渡し用の箱を作る。受け渡す用に加工
+        todo.setTask(form.title());//その箱にデータを詰める
+        todoRepository.save(todo);//箱をデータベースに保存する。
     }
 }
