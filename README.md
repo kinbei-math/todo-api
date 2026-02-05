@@ -36,5 +36,50 @@ Spring Boot学習用のTodo管理アプリケーション（バックエンド�
   - クラス間の結合度を下げる（疎結合）設計思想の理解
   - Postmanを使用したAPIへのPOSTリクエスト送信とログ確認（Controller → Service → Repositoryの連携確認）
 
+# 2026-02-04 Todo API バックエンド実装
+
+## 日付
+2026/02/04
+
+## ファイル
+- **Entity**: `src/.../entity/Todo.java`
+- **Repository**: `src/.../repository/TodoRepository.java`
+- **Service**: `src/.../service/TodoService.java`
+- **Controller**: `src/.../controller/TodoController.java`
+- **Config**: `build.gradle`, `application.properties`
+
+## 学習内容
+### 15. Spring Bootのレイヤーアーキテクチャ
+データの受け渡しフローを実装しました。
+- **Controller (受付)**: リクエストを受け取り、Serviceへ依頼。
+- **Service (実務)**: データの加工やビジネスロジックを担当。
+- **Repository (倉庫)**: データベースへの保存・取得（Spring Data JPA利用）。
+- **Entity (箱)**: データの構造定義とID自動採番（`@GeneratedValue`）。
+
+### 16. トラブルシューティング
+- H2 Consoleが表示されない問題（404 Not Found）に直面。
+- `build.gradle` の依存関係（`spring-boot-starter-web`）の修正を実施。
+- 次回、IDEのキャッシュを排除した起動方法（`./gradlew bootRun`）で解決確認予定。
+
+### 17. API結合テストの実装と型安全性の担保
+
+        日付: 2/5
+
+        ファイル: controller/TodoController.java, dto/TodoCreateForm.java, dto/TodoResponse.java, test/.../TodoControllerTest.java
+
+        学習内容:
+
+        @WebMvcTest + MockMvc による Web層限定の軽量テストを実装（Controllerの入出力と責務を検証）
+
+        LocalDate.parse() を用いた ISO 8601（YYYY-MM-DD）→ LocalDate の型変換を確認
+
+        jsonPath で レスポンスJSONの値（title / dueDate） を検証し、型安全性と整合性を担保
+
+        Mockito.verify による Controller → Service 呼び出し（引数/回数） の検証で委譲の正しさを証明
+
+        メモ：@MockitoBean の戻り値はデフォルトで null になりやすい。テスト側で戻り値を定義（stub）するか、Controller側のレスポンス生成方針を調整する必要がある
+
+
+
   ---
-Last Updated: 2026/02/03
+Last Updated: 2026/02/05

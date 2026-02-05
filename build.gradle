@@ -4,7 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.example'
+group = 'com.example.todo_api'
 version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
@@ -19,12 +19,22 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// Web機能
+	//Spring MVCでWebアプリ/APIを作るための基本セット。
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	//Spring Bootのテスト“全部入り”セット。Boot4では分割されているものもある。
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//JUnit Platform の実行に関係するコンポーネントを、テスト実行時にだけ使う。
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'com.h2database:h2'
+	//Web MVC層テスト用スターター。(Boot4で切り離されているため)
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	//**JSONの読み書き（Jackson）**のためのスターター。
+	implementation 'org.springframework.boot:spring-boot-starter-json'
+	// H2 Databaseの Webコンソール機能（ブラウザでDB中身を見るUI）SpringBoot 4.0以降分離された
+	implementation 'org.springframework.boot:spring-boot-h2console'
+	// データベース操作(JPA)
+	//**JPA（Hibernate等）**でDB操作をするためのスターター。
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('test') {
